@@ -160,10 +160,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     UNHANDLED
 };
-
-const indicator_t PROGMEM indicators[] = {
-    KEYCODE_IN_LAYER_INDICATOR(TT(3), 3, RGB_WHITE),
-    KEYCODE_IN_LAYER_INDICATOR(TT(4), 4, RGB_WHITE),
-    KEYCODE_IN_LAYER_INDICATOR(ALT_MO1, 1, RGB_WHITE),
-    KEYCODE_IN_LAYER_INDICATOR(MO(2), 2, RGB_WHITE)
-};
