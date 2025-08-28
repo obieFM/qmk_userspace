@@ -5,6 +5,7 @@
 enum custom_keycodes {
     M_MOVE = SAFE_RANGE,
     M_WINGET,
+    M_OBS,
     M_QMK,
     M_VIA,
     M_PRIVATE,
@@ -25,11 +26,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                          KC_LCTL,  KC_SPC,  ALT_MO1,  MO(2),  KC_ENT,  KC_RGUI
     ),
     [1] = LAYOUT(
-        KC_GRV,        F1_F15,     F2_F16,   F3_F17,    F4_F18,       F5_F19,                      KC_F6,    KC_F7,   KC_F8,     KC_F9,   KC_F10,   KC_F11,
-        LALT(KC_TAB),  M_PRIVATE,  KC_UP,    M_PUBLIC,  LCTL(KC_Y),   REPLAY,                      REPLAY,   RECORD,  M_WINGET,  KC_F24,  XXXXXXX,  M_QMK,
-        KC_CAPS,       KC_LEFT,    KC_DOWN,  KC_RGHT,   XXXXXXX,      RECORD,                      M_VIA,    M_GPT,   TSKMGR,    LANG,    M_1MON,   M_2MON,
-        KC_LSFT,       XXXXXXX,    XXXXXXX,  MUTE,      DEAFEN,       M_BRZ,   XXXXXXX,  XXXXXXX,  KC_CALC,  M_SMS,   HIRA,      KATA,    KC_PIPE,  KC_BSLS,
-                                                        LALT(KC_F4),  M_MOVE,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX
+        KC_GRV,        KC_F1,              KC_F2,            KC_F3,     KC_F4,        KC_F5,                       KC_F6,    KC_F7,   KC_F8,     KC_F9,  KC_F10,   KC_F11,
+        LALT(KC_TAB),  M_PRIVATE,          KC_UP,            M_PUBLIC,  LCTL(KC_Y),   REPLAY,                      REPLAY,   RECORD,  M_WINGET,  M_OBS,  XXXXXXX,  M_QMK,
+        KC_CAPS,       KC_LEFT,            KC_DOWN,          KC_RGHT,   XXXXXXX,      RECORD,                      M_VIA,    M_GPT,   TSKMGR,    LANG,   M_1MON,   M_2MON,
+        KC_LSFT,       KC_KB_VOLUME_DOWN,  KC_KB_VOLUME_UP,  MUTE,      DEAFEN,       M_BRZ,   MI_OCTU,  XXXXXXX,  KC_CALC,  M_SMS,   HIRA,      KATA,   KC_PIPE,  KC_BSLS,
+                                                                        LALT(KC_F4),  M_MOVE,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX
     ),
     [2] = LAYOUT(
         KC_GRV,   KC_EXLM,  KC_AT,    KC_HASH,  KC_DLR,   KC_LPRN,                      KC_RPRN,  KC_AMPR,  KC_ASTR,  KC_MINS,  KC_EQL,   KC_BSPC,
@@ -43,7 +44,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_DEL,   KC_Y,  KC_U,  KC_I,     KC_O,     KC_P,                         KC_Q,    KC_W,    KC_E,  KC_R,  KC_T,  KC_TAB,
         KC_QUOT,  KC_H,  KC_J,  KC_K,     KC_L,     KC_SCLN,                      KC_A,    KC_S,    KC_D,  KC_F,  KC_G,  KC_LALT,
         KC_RSFT,  KC_N,  KC_M,  KC_COMM,  KC_DOT,   KC_SLSH,  XXXXXXX,  XXXXXXX,  KC_Z,    KC_X,    KC_C,  KC_V,  KC_B,  KC_LSFT,
-                                          KC_RGUI,  KC_ENT,   XXXXXXX,  XXXXXXX,  KC_SPC,  KC_RCTL
+                                          KC_RGUI,  KC_ENT,   MI_OCTD,  XXXXXXX,  KC_SPC,  KC_RCTL
     )
 };
 
@@ -64,6 +65,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 HANDLED
             case M_WINGET:
                 SEND_STRING(RUN"winget install ");
+                HANDLED
+            case M_GPT:
+                SEND_STRING(RUN"C:\\Software\\ToggleOBS.bat"ENTER);
                 HANDLED
             case M_QMK:
                 SEND_STRING(RUN"\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\QMK MSYS\""ENTER SS_DELAY(1000)"qmk compile -j 0"ENTER);
@@ -90,44 +94,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SELALL"Public"ENTER);
                 HANDLED
             case M_BRZ:
-                SEND_STRING("[BRZ-]"SS_DELAY(20)SS_TAP(X_LEFT));
+                SEND_STRING("[BRZ-] "SS_DELAY(20)SS_TAP(X_LEFT)SS_TAP(X_LEFT));
                 HANDLED
-            case F1_F15:
-                register_code(KC_F15);
-                UNHANDLED
-            case F2_F16:
-                register_code(KC_F16);
-                UNHANDLED
-            case F3_F17:
-                register_code(KC_F17);
-                UNHANDLED
-            case F4_F18:
-                register_code(KC_F18);
-                UNHANDLED
-            case F5_F19:
-                register_code(KC_F19);
-                UNHANDLED
             case ALT_MO1:
                 SET_TIMER(mo1);
                 UNHANDLED
         }
     }
     else switch(keycode) {
-        case F1_F15:
-            unregister_code(KC_F15);
-            UNHANDLED
-        case F2_F16:
-            unregister_code(KC_F16);
-            UNHANDLED
-        case F3_F17:
-            unregister_code(KC_F17);
-            UNHANDLED
-        case F4_F18:
-            unregister_code(KC_F18);
-            UNHANDLED
-        case F5_F19:
-            unregister_code(KC_F19);
-            UNHANDLED
         case ALT_MO1:
             if (mo1_listen)
             {
